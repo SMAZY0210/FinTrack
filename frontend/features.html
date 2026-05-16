@@ -1,24 +1,331 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#6366f1">
     <title>Features - FinTrack</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="icon" type="image/svg+xml" sizes="32x32" href="favicon32.svg">
-    <link rel="shortcut icon" href="favicon.svg">
     <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/analytics.css">
     <script src="js/theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* ── Features Page Styles ── */
+        .features-hero {
+            position: relative;
+            padding: 100px 64px 80px;
+            text-align: center;
+            overflow: hidden;
+        }
+        .features-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+            background-size: 48px 48px;
+            opacity: 0.4;
+        }
+        .features-hero::after {
+            content: '';
+            position: absolute;
+            top: -200px; left: 50%;
+            transform: translateX(-50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(0,212,160,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .features-hero h1 {
+            position: relative; z-index: 1;
+            font-family: var(--font-head);
+            font-size: clamp(36px, 5vw, 60px);
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+        .features-hero h1 em { font-style: normal; color: var(--emerald); }
+        .features-hero p {
+            position: relative; z-index: 1;
+            color: var(--text-2); font-size: 18px;
+            max-width: 540px; margin: 0 auto 36px;
+            line-height: 1.7;
+        }
+        .features-hero .hero-cta {
+            position: relative; z-index: 1;
+            display: flex; gap: 12px; justify-content: center;
+        }
+
+        /* ── Feature Sections ── */
+        .feature-section {
+            padding: 80px 64px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature-section.reverse { direction: rtl; }
+        .feature-section.reverse > * { direction: ltr; }
+
+        .feature-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--emerald-bg);
+            color: var(--emerald);
+            border: 1px solid rgba(0,212,160,0.2);
+            padding: 5px 12px;
+            border-radius: var(--r-full);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .feature-text h2 {
+            font-family: var(--font-head);
+            font-size: clamp(26px, 3vw, 38px);
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        .feature-text p {
+            color: var(--text-2);
+            font-size: 16px;
+            line-height: 1.75;
+            margin-bottom: 24px;
+        }
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-2);
+            font-size: 14px;
+        }
+        .feature-list li::before {
+            content: '';
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: var(--emerald-bg);
+            border: 1.5px solid var(--emerald);
+            flex-shrink: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2300d4a0' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* ── Chart Demo Cards ── */
+        .chart-demo {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-xl);
+            padding: 24px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+        .chart-demo::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(0,212,160,0.06) 0%, transparent 70%);
+        }
+        .chart-demo-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .chart-demo-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: 0.3px;
+        }
+        .chart-demo-badge {
+            background: var(--emerald-bg);
+            color: var(--emerald);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: var(--r-full);
+        }
+        /* Prevent Chart.js infinite-growth bug */
+        .chart-demo canvas,
+        .an-chart-wrap canvas,
+        .an-card canvas {
+            display: block;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        .chart-canvas-wrap {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* ── Mini stat cards inside demo ── */
+        .mini-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .mini-stat {
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            border-radius: var(--r-md);
+            padding: 12px;
+            text-align: center;
+        }
+        .mini-stat-val {
+            font-family: var(--font-mono);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+        .mini-stat-val.green { color: var(--emerald); }
+        .mini-stat-val.red { color: var(--rose); }
+        .mini-stat-val.amber { color: var(--amber); }
+        .mini-stat-label {
+            font-size: 10px;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Analytics showcase ── */
+        .analytics-showcase {
+            padding: 80px 0;
+            background: var(--bg-2);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .showcase-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 0 24px;
+        }
+        .showcase-header h2 {
+            font-family: var(--font-head);
+            font-size: clamp(28px, 3.5vw, 44px);
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+        .showcase-header p {
+            color: var(--text-2);
+            font-size: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        /* Scoped an-main width for this page */
+        .analytics-showcase .an-main { max-width: 1100px; }
+
+        /* ── Budget bars demo ── */
+        .budget-bars { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
+        .budget-bar-row { display: flex; flex-direction: column; gap: 6px; }
+        .budget-bar-top { display: flex; justify-content: space-between; align-items: center; }
+        .budget-bar-label { font-size: 13px; color: var(--text-2); }
+        .budget-bar-val { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); }
+        .budget-track { height: 6px; background: var(--bg-3); border-radius: var(--r-full); overflow: hidden; }
+        .budget-fill { height: 100%; border-radius: var(--r-full); transition: width 1s ease; }
+
+        /* ── Feature pills ── */
+        .features-grid {
+            max-width: 1100px;
+            margin: 80px auto;
+            padding: 0 64px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .feature-pill {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 28px;
+            transition: var(--t-base);
+        }
+        .feature-pill:hover {
+            border-color: var(--emerald);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-glow-emerald);
+        }
+        .pill-icon {
+            width: 44px; height: 44px;
+            border-radius: var(--r-md);
+            background: var(--emerald-bg);
+            border: 1px solid rgba(0,212,160,0.2);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 16px;
+            color: var(--emerald);
+        }
+        .feature-pill h3 {
+            font-size: 16px; font-weight: 700;
+            color: var(--text); margin-bottom: 8px;
+        }
+        .feature-pill p { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+
+        /* ── CTA ── */
+        .features-cta {
+            text-align: center;
+            padding: 80px 64px;
+            position: relative;
+            overflow: hidden;
+        }
+        .features-cta::before {
+            content: '';
+            position: absolute;
+            bottom: -100px; left: 50%;
+            transform: translateX(-50%);
+            width: 600px; height: 400px;
+            background: radial-gradient(ellipse, rgba(0,212,160,0.08) 0%, transparent 70%);
+        }
+        .features-cta h2 {
+            position: relative; z-index: 1;
+            font-family: var(--font-head);
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 800; color: var(--text);
+            margin-bottom: 14px;
+        }
+        .features-cta p {
+            position: relative; z-index: 1;
+            color: var(--text-2); font-size: 16px;
+            margin-bottom: 32px;
+        }
+        .features-cta .cta-btns {
+            position: relative; z-index: 1;
+            display: flex; gap: 12px; justify-content: center;
+        }
+
+        @media (max-width: 900px) {
+            .feature-section, .dashboard-preview { grid-template-columns: 1fr; }
+            .feature-section { padding: 48px 24px; }
+            .feature-section.reverse { direction: ltr; }
+            .features-hero, .analytics-showcase, .features-cta { padding: 60px 24px; }
+            .features-grid { grid-template-columns: 1fr; padding: 0 24px; margin: 48px auto; }
+            .dashboard-preview .chart-demo.wide { grid-column: auto; }
+            .mini-stats { grid-template-columns: repeat(3,1fr); }
+        }
+    </style>
 </head>
 <body>
 
 <!-- NAVBAR -->
 <header class="navbar">
-    <div class="logo">FinTrack</div>
+    <a href="index.html" class="logo">FinTrack</a>
     <nav>
         <ul>
             <li><a href="index.html">Home</a></li>
@@ -26,69 +333,348 @@
             <li><a href="pricing.html">Pricing</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="login.html" class="btn-login">Login</a></li>
-            <li><a href="signup.html" class="btn-primary">Sign Up</a></li>
+            <li><a href="signup.html" class="btn-primary">Sign Up Free</a></li>
         </ul>
     </nav>
 </header>
 
 <!-- HERO -->
-<section class="hero">
-    <div class="hero-text">
-        <h1>Powerful Features</h1>
-        <p>Everything you need to manage your personal finances efficiently.</p>
+<section class="features-hero">
+    <div class="feature-label">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+        Everything you need
+    </div>
+    <h1>Features built for <em>real</em> financial clarity</h1>
+    <p>From daily expense tracking to AI-powered insights — FinTrack gives you the full picture of your finances.</p>
+    <div class="hero-cta">
+        <a href="signup.html" class="btn-primary">Start for free</a>
+        <a href="login.html" class="btn-secondary">View demo</a>
     </div>
 </section>
 
-<!-- FEATURE DETAILS -->
-<section class="features-detailed">
-
-    <div class="feature-row">
-        <div class="feature-text">
-            <h2>Expense & Income Tracking</h2>
-            <p>
-                Easily log your daily transactions, categorize expenses, and keep track of your income
-                with a simple and intuitive interface.
-            </p>
-        </div>
-        <div class="feature-image">
-            <img src="assets/images/feature1.png" alt="Tracking">
-        </div>
+<!-- FEATURE 1 — Income & Expense Tracking -->
+<section class="feature-section">
+    <div class="feature-text">
+        <div class="feature-label">Transactions</div>
+        <h2>Track every dollar, effortlessly</h2>
+        <p>Log income and expenses in seconds. Filter by category, date, or keyword. Export to CSV anytime.</p>
+        <ul class="feature-list">
+            <li>8 expense categories with smart icons</li>
+            <li>Month-by-month filtering</li>
+            <li>Quick add from any page</li>
+            <li>CSV export for spreadsheets</li>
+        </ul>
     </div>
-
-    <div class="feature-row reverse">
-        <div class="feature-text">
-            <h2>Advanced Analytics</h2>
-            <p>
-                Gain deep insights into your financial habits using powerful analytics powered by Python.
-                Visualize trends and improve your spending behavior.
-            </p>
+    <div class="chart-demo">
+        <div class="chart-demo-header">
+            <span class="chart-demo-title">Monthly Overview — May 2026</span>
+            <span class="chart-demo-badge">Live Data</span>
         </div>
-        <div class="feature-image">
-            <img src="assets/images/feature2.png" alt="Analytics">
+        <div class="mini-stats">
+            <div class="mini-stat">
+                <div class="mini-stat-val green">$8,240</div>
+                <div class="mini-stat-label">Income</div>
+            </div>
+            <div class="mini-stat">
+                <div class="mini-stat-val red">$5,180</div>
+                <div class="mini-stat-label">Expenses</div>
+            </div>
+            <div class="mini-stat">
+                <div class="mini-stat-val amber">$3,060</div>
+                <div class="mini-stat-label">Saved</div>
+            </div>
         </div>
+        <div class="chart-canvas-wrap" style="height:180px"><canvas id="barChart"></canvas></div>
     </div>
-
-    <div class="feature-row">
-        <div class="feature-text">
-            <h2>Secure Data Management</h2>
-            <p>
-                Your financial data is stored securely using modern technologies and best practices,
-                ensuring privacy and protection at all times.
-            </p>
-        </div>
-        <div class="feature-image">
-            <img src="assets/images/feature3.png" alt="Security">
-        </div>
-    </div>
-
 </section>
+
+<!-- FEATURE 2 — Budgets -->
+<section class="feature-section reverse">
+    <div class="feature-text">
+        <div class="feature-label">Budgets</div>
+        <h2>Set limits. Stay in control.</h2>
+        <p>Create monthly budgets per category. Get instant alerts at 80% and 100% so you never overspend.</p>
+        <ul class="feature-list">
+            <li>Per-category monthly budget limits</li>
+            <li>Real-time spending progress bars</li>
+            <li>Email alerts at 80% and 100%</li>
+            <li>Month navigation to review past budgets</li>
+        </ul>
+    </div>
+    <div class="chart-demo">
+        <div class="chart-demo-header">
+            <span class="chart-demo-title">Budget Progress — May 2026</span>
+            <span class="chart-demo-badge">3 / 5 on track</span>
+        </div>
+        <div class="budget-bars" id="budgetBars"></div>
+    </div>
+</section>
+
+<!-- FEATURE 3 — Goals -->
+<section class="feature-section">
+    <div class="feature-text">
+        <div class="feature-label">Goals</div>
+        <h2>Save toward what matters</h2>
+        <p>Create savings goals with targets and deadlines. Add funds incrementally and watch your progress grow.</p>
+        <ul class="feature-list">
+            <li>Custom savings goals with emoji</li>
+            <li>Visual progress tracking</li>
+            <li>Days remaining countdown</li>
+            <li>Instant completion celebration</li>
+        </ul>
+    </div>
+    <div class="chart-demo">
+        <div class="chart-demo-header">
+            <span class="chart-demo-title">Financial Goals</span>
+            <span class="chart-demo-badge">2 active</span>
+        </div>
+        <div class="chart-canvas-wrap" style="height:200px"><canvas id="goalsChart"></canvas></div>
+    </div>
+</section>
+
+<!-- ANALYTICS SHOWCASE -->
+<section class="analytics-showcase">
+    <div class="showcase-header">
+        <div class="feature-label" style="margin: 0 auto 16px;">Analytics</div>
+        <h2>The same analytics your dashboard shows</h2>
+        <p>Real charts powered by Chart.js — exactly what you see after logging in.</p>
+    </div>
+
+    <div class="an-main" style="margin:0 auto;padding:0 24px;">
+
+        <!-- Stat Grid -->
+        <div class="an-stat-grid" style="margin-bottom:20px;">
+            <div class="an-card an-stat savings-rate">
+                <div class="an-stat-label">Savings Rate</div>
+                <div class="an-stat-value income-color">37%</div>
+                <div class="an-stat-sub">↑ 5pp vs last month</div>
+                <div class="an-mini-track"><div class="an-mini-fill" style="width:37%;background:var(--emerald)"></div></div>
+            </div>
+            <div class="an-card an-stat">
+                <div class="an-stat-label">Income</div>
+                <div class="an-stat-value income-color">$8,240</div>
+                <div class="an-stat-sub">↑ 16% vs May '25</div>
+                <div class="an-mini-track"><div class="an-mini-fill" style="width:82%;background:var(--emerald)"></div></div>
+            </div>
+            <div class="an-card an-stat">
+                <div class="an-stat-label">Expenses</div>
+                <div class="an-stat-value expense-color">$5,180</div>
+                <div class="an-stat-sub">↓ 12% vs May '25</div>
+                <div class="an-mini-track"><div class="an-mini-fill" style="width:63%;background:var(--rose)"></div></div>
+            </div>
+            <div class="an-card an-stat">
+                <div class="an-stat-label">Net Saved</div>
+                <div class="an-stat-value">$3,060</div>
+                <div class="an-stat-sub">↑ 159% vs May '25</div>
+                <div class="an-mini-track"><div class="an-mini-fill" style="width:52%;background:var(--sky)"></div></div>
+            </div>
+            <div class="an-card an-stat">
+                <div class="an-stat-label">Avg/Day</div>
+                <div class="an-stat-value">$172</div>
+                <div class="an-stat-sub">↑ 18% vs last month</div>
+                <div class="an-mini-track"><div class="an-mini-fill" style="width:44%;background:var(--amber)"></div></div>
+            </div>
+            <div class="an-card an-stat net-worth">
+                <div class="an-stat-label">Net Worth</div>
+                <div class="an-stat-value">$42,800</div>
+                <div class="an-stat-sub">↑ $3,060 this month</div>
+                <div class="an-mini-track"><div class="an-mini-fill" style="width:68%;background:var(--sky)"></div></div>
+            </div>
+        </div>
+
+        <!-- AI Insights -->
+        <div class="an-card an-insights-card">
+            <div class="an-card-header">
+                <h3>AI-Powered Insights</h3>
+                <span class="an-card-sub">Auto-generated · May 2026</span>
+            </div>
+            <div class="insights-list">
+                <div class="insight-item insight-positive">
+                    <span class="insight-icon">✅</span>
+                    <span class="insight-text">Great job! You're saving 37% of your income this month — well above the recommended 20%.</span>
+                </div>
+                <div class="insight-item insight-info">
+                    <span class="insight-icon">📊</span>
+                    <span class="insight-text">Food is your biggest expense at 42% of total spending. Consider setting a tighter budget.</span>
+                </div>
+                <div class="insight-item insight-warning">
+                    <span class="insight-icon">⚠️</span>
+                    <span class="insight-text">Daily spending is up 18% from last month ($172/day vs $146/day). Monitor closely.</span>
+                </div>
+                <div class="insight-item insight-positive">
+                    <span class="insight-icon">🎉</span>
+                    <span class="insight-text">Expenses are 12% lower than the same month last year — great long-term improvement!</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Income vs Expenses wide -->
+        <div class="an-card wide" style="margin-top:14px;">
+            <div class="an-card-header">
+                <h3>Income vs Expenses — Last 12 Months</h3>
+                <span class="an-card-sub">With savings overlay</span>
+            </div>
+            <div class="an-chart-wrap">
+                <div class="chart-canvas-wrap" style="height:220px"><canvas id="incExpChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- Two-col: Donut + YoY -->
+        <div class="an-two-col">
+            <div class="an-card">
+                <div class="an-card-header">
+                    <h3>Spending by Category</h3>
+                    <span class="an-card-sub">May 2026</span>
+                </div>
+                <div class="chart-canvas-wrap" style="height:220px"><canvas id="donutChart"></canvas></div>
+            </div>
+            <div class="an-card an-yoy-card" style="margin-bottom:0;">
+                <div class="an-card-header">
+                    <h3>Year-over-Year Comparison</h3>
+                    <span class="an-card-sub">May 2026 vs May 2025</span>
+                </div>
+                <div class="yoy-grid">
+                    <div class="yoy-col">
+                        <div class="yoy-cell header">Metric</div>
+                        <div class="yoy-cell label">Expenses</div>
+                        <div class="yoy-cell label">Income</div>
+                        <div class="yoy-cell label">Savings</div>
+                    </div>
+                    <div class="yoy-col">
+                        <div class="yoy-cell header">This Year</div>
+                        <div class="yoy-cell">$5,180</div>
+                        <div class="yoy-cell">$8,240</div>
+                        <div class="yoy-cell">$3,060</div>
+                    </div>
+                    <div class="yoy-col">
+                        <div class="yoy-cell header">Last Year</div>
+                        <div class="yoy-cell">$5,920</div>
+                        <div class="yoy-cell">$7,100</div>
+                        <div class="yoy-cell">$1,180</div>
+                    </div>
+                    <div class="yoy-col">
+                        <div class="yoy-cell header">Change</div>
+                        <div class="yoy-cell" style="color:var(--emerald);font-weight:700;">▼ 12%</div>
+                        <div class="yoy-cell" style="color:var(--emerald);font-weight:700;">▲ 16%</div>
+                        <div class="yoy-cell" style="color:var(--emerald);font-weight:700;">▲ 159%</div>
+                    </div>
+                </div>
+
+                <!-- Top Expenses table -->
+                <div style="margin-top:18px;">
+                    <div class="an-card-header" style="margin-bottom:8px;">
+                        <h3>Top Expense Categories</h3>
+                        <span class="an-card-sub">May 2026</span>
+                    </div>
+                    <table class="top-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Category</th>
+                                <th style="text-align:right;">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="top-rank">1</span></td><td>🍔 Food</td><td class="top-amount">$1,820</td></tr>
+                            <tr><td><span class="top-rank">2</span></td><td>🏠 Bills</td><td class="top-amount">$890</td></tr>
+                            <tr><td><span class="top-rank">3</span></td><td>🎬 Entertainment</td><td class="top-amount">$520</td></tr>
+                            <tr><td><span class="top-rank">4</span></td><td>🚗 Transport</td><td class="top-amount">$380</td></tr>
+                            <tr><td><span class="top-rank">5</span></td><td>🛍 Shopping</td><td class="top-amount">$310</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily spending wide -->
+        <div class="an-card wide">
+            <div class="an-card-header">
+                <h3>Daily Spending — May 2026</h3>
+                <span class="an-card-sub">Avg $172/day · Red = 1.5× above avg</span>
+            </div>
+            <div class="an-chart-wrap">
+                <div class="chart-canvas-wrap" style="height:160px"><canvas id="dailyChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- Spending Heatmap -->
+        <div class="an-card" style="margin-bottom:14px;">
+            <div class="an-card-header">
+                <h3>Spending Heatmap</h3>
+                <span class="an-card-sub">Last 6 months by category</span>
+            </div>
+            <div class="heatmap-wrap">
+                <div class="heatmap-table">
+                    <div class="heatmap-header">
+                        <div></div>
+                        <div class="heatmap-month">Dec</div>
+                        <div class="heatmap-month">Jan</div>
+                        <div class="heatmap-month">Feb</div>
+                        <div class="heatmap-month">Mar</div>
+                        <div class="heatmap-month">Apr</div>
+                        <div class="heatmap-month">May</div>
+                    </div>
+                    <div id="heatmapRows"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- FEATURE PILLS -->
+<div class="features-grid">
+    <div class="feature-pill">
+        <div class="pill-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v5h5M23 20v-5h-5"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+        </div>
+        <h3>Recurring Transactions</h3>
+        <p>Set up daily, weekly, monthly or yearly recurring income and expenses. Automatically processed by our cron system.</p>
+    </div>
+    <div class="feature-pill">
+        <div class="pill-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <h3>Email Alerts</h3>
+        <p>Get notified when budgets hit 80% or 100%. Weekly financial summary reports delivered to your inbox.</p>
+    </div>
+    <div class="feature-pill">
+        <div class="pill-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3>Secure by Default</h3>
+        <p>JWT authentication, bcrypt password hashing, rate limiting, and MongoDB sanitization protect your data.</p>
+    </div>
+    <div class="feature-pill">
+        <div class="pill-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3>25 Currencies</h3>
+        <p>Switch between USD, BDT, EUR, GBP, JPY and 20 more currencies. All amounts display in your chosen currency.</p>
+    </div>
+    <div class="feature-pill">
+        <div class="pill-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <h3>PWA Support</h3>
+        <p>Install FinTrack on your phone or desktop like a native app. Works offline with service worker caching.</p>
+    </div>
+    <div class="feature-pill">
+        <div class="pill-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+        <h3>Profile & Avatar</h3>
+        <p>Upload and crop a profile picture with our built-in circular crop tool. Update name, email, and password anytime.</p>
+    </div>
+</div>
 
 <!-- CTA -->
-<section class="download">
-    <h2>Start Managing Your Money Today</h2>
-    <p>Sign up now and take control of your finances.</p>
-    <div class="store-buttons">
-        <a href="#" class="btn-primary">Get Started</a>
+<section class="features-cta">
+    <h2>Ready to take control?</h2>
+    <p>Join thousands tracking their finances with FinTrack. Free forever.</p>
+    <div class="cta-btns">
+        <a href="signup.html" class="btn-primary">Create free account</a>
+        <a href="login.html" class="btn-secondary">Sign in</a>
     </div>
 </section>
 
@@ -96,5 +682,179 @@
 <footer>
     <p>© 2026 FinTrack. All rights reserved.</p>
 </footer>
+
+<script>
+// ── Chart defaults matching FinTrack theme ────────────────────────
+const isDark = () => document.documentElement.getAttribute('data-theme') !== 'light';
+const getColor = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+Chart.defaults.color = '#8fa3c0';
+Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.animation = { duration: 600 };
+// Prevent infinite resize feedback loop
+Chart.defaults.resizeDelay = 200;
+
+const MONTHS = ['Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May'];
+const incomeData  = [6200,6800,7100,6500,7400,7800,6900,7200,7600,7900,8100,8240];
+const expenseData = [4800,5100,4600,5300,4900,5500,4700,5000,5200,4800,5400,5180];
+const savingsData = incomeData.map((v,i) => v - expenseData[i]);
+
+// ── Bar Chart (Income vs Expenses monthly) ────────────────────────
+const barCtx = document.getElementById('barChart').getContext('2d');
+new Chart(barCtx, {
+    type: 'bar',
+    data: {
+        labels: MONTHS,
+        datasets: [
+            { label: 'Income',   data: incomeData,  backgroundColor: 'rgba(99,102,241,0.8)',  borderRadius: 5 },
+            { label: 'Expenses', data: expenseData, backgroundColor: 'rgba(6,182,212,0.8)',   borderRadius: 5 }
+        ]
+    },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: $${c.raw.toLocaleString()}` } } },
+        scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { callback: v => '$' + (v/1000) + 'k' } } }
+    }
+});
+
+// ── Budget Bars ───────────────────────────────────────────────────
+const budgets = [
+    { cat: 'Food',          spent: 1820, limit: 2000, color: '#f59e0b' },
+    { cat: 'Transport',     spent: 380,  limit: 500,  color: '#06b6d4' },
+    { cat: 'Entertainment', spent: 520,  limit: 400,  color: '#ef4444' },
+    { cat: 'Bills',         spent: 890,  limit: 1000, color: '#6366f1' },
+    { cat: 'Healthcare',    spent: 120,  limit: 300,  color: '#10b981' },
+];
+const budgetContainer = document.getElementById('budgetBars');
+budgets.forEach(b => {
+    const pct = Math.min(Math.round((b.spent / b.limit) * 100), 100);
+    const color = pct >= 100 ? '#ef4444' : pct >= 80 ? '#f59e0b' : '#00d4a0';
+    budgetContainer.innerHTML += `
+        <div class="budget-bar-row">
+            <div class="budget-bar-top">
+                <span class="budget-bar-label">${b.cat}</span>
+                <span class="budget-bar-val">$${b.spent} / $${b.limit} — <span style="color:${color}">${pct}%</span></span>
+            </div>
+            <div class="budget-track">
+                <div class="budget-fill" style="width:${pct}%;background:${color}"></div>
+            </div>
+        </div>`;
+});
+
+// ── Goals Chart (horizontal bar) ─────────────────────────────────
+const goalsCtx = document.getElementById('goalsChart').getContext('2d');
+new Chart(goalsCtx, {
+    type: 'bar',
+    data: {
+        labels: ['🏠 House Down\nPayment', '✈️ Japan\nTrip', '🚗 New\nCar', '💻 MacBook\nPro'],
+        datasets: [
+            { label: 'Saved',     data: [12000, 2800, 5500, 1200], backgroundColor: '#00d4a0', borderRadius: 4 },
+            { label: 'Remaining', data: [28000, 700,  4500, 1100], backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: 4 }
+        ]
+    },
+    options: {
+        indexAxis: 'y',
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: $${c.raw.toLocaleString()}` } } },
+        scales: {
+            x: { stacked: true, ticks: { callback: v => '$' + (v/1000) + 'k' } },
+            y: { stacked: true, grid: { display: false } }
+        }
+    }
+});
+
+// ── Income vs Expenses full 12-month ─────────────────────────────
+const incExpCtx = document.getElementById('incExpChart').getContext('2d');
+new Chart(incExpCtx, {
+    type: 'bar',
+    data: {
+        labels: MONTHS,
+        datasets: [
+            { label: 'Income',   data: incomeData,  backgroundColor: 'rgba(99,102,241,0.75)', borderRadius: 5 },
+            { label: 'Expenses', data: expenseData, backgroundColor: 'rgba(6,182,212,0.75)',  borderRadius: 5 },
+            { label: 'Savings',  data: savingsData, type: 'line', borderColor: '#00d4a0',
+              backgroundColor: 'rgba(0,212,160,0.08)', fill: true, tension: 0.4, pointRadius: 4,
+              pointBackgroundColor: '#00d4a0', borderWidth: 2 }
+        ]
+    },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: $${c.raw.toLocaleString()}` } } },
+        scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { callback: v => '$' + (v/1000) + 'k' } } }
+    }
+});
+
+// ── Donut Chart ───────────────────────────────────────────────────
+const donutCtx = document.getElementById('donutChart').getContext('2d');
+new Chart(donutCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Food','Transport','Bills','Healthcare','Entertainment','Shopping','Other'],
+        datasets: [{ data: [1820,380,890,120,520,310,140],
+            backgroundColor: ['#f59e0b','#06b6d4','#ef4444','#10b981','#f97316','#8b5cf6','#64748b'],
+            borderWidth: 3, borderColor: 'var(--surface)', hoverOffset: 8 }]
+    },
+    options: {
+        responsive: true, maintainAspectRatio: false, cutout: '65%',
+        plugins: {
+            legend: { position: 'right', labels: { padding: 12, font: { size: 11 } } },
+            tooltip: { callbacks: { label: c => ` ${c.label}: $${c.raw}` } }
+        }
+    }
+});
+
+// ── Daily Spending ────────────────────────────────────────────────
+const dailyCtx = document.getElementById('dailyChart').getContext('2d');
+const days = Array.from({length: 31}, (_, i) => i + 1);
+const dailyAmts = [145,0,312,89,200,0,178,245,0,156,89,420,0,178,234,0,145,89,312,200,0,178,145,234,0,89,312,178,145,0,220];
+const avgDaily = 172;
+new Chart(dailyCtx, {
+    type: 'bar',
+    data: {
+        labels: days,
+        datasets: [
+            { label: 'Spending', data: dailyAmts,
+              backgroundColor: dailyAmts.map(v => v > avgDaily * 1.5 ? 'rgba(239,68,68,0.8)' : 'rgba(99,102,241,0.7)'),
+              borderRadius: 3 },
+            { label: 'Avg/Day', data: Array(31).fill(avgDaily),
+              type: 'line', borderColor: '#f59e0b', borderDash: [5,4],
+              borderWidth: 1.5, pointRadius: 0, fill: false }
+        ]
+    },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: $${c.raw}` } } },
+        scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 15 } }, y: { beginAtZero: true, ticks: { callback: v => '$' + v } } }
+    }
+});
+
+// ── Spending Heatmap ──────────────────────────────────────────────
+const heatmapData = [
+    { cat: '🍔 Food',       vals: [1650,1720,1580,1800,1750,1820] },
+    { cat: '🚗 Transport',  vals: [420, 390, 360, 410, 400, 380]  },
+    { cat: '🎬 Entertain.', vals: [380, 450, 290, 510, 480, 520]  },
+    { cat: '🏠 Bills',      vals: [870, 870, 870, 890, 890, 890]  },
+    { cat: '🛍 Shopping',   vals: [520, 310, 680, 290, 410, 310]  },
+    { cat: '💊 Health',     vals: [80,  200, 60,  150, 90, 120]   },
+];
+const heatContainer = document.getElementById('heatmapRows');
+heatmapData.forEach(row => {
+    const max = Math.max(...row.vals);
+    const cells = row.vals.map(v => {
+        const intensity = v / max;
+        const alpha = 0.12 + intensity * 0.68;
+        const bg = `rgba(0,212,160,${alpha.toFixed(2)})`;
+        const textColor = intensity > 0.6 ? '#0a0f1e' : '#e8eef8';
+        return `<div class="heatmap-cell" style="background:${bg};color:${textColor}" title="${row.cat}: $${v.toLocaleString()}">$${(v/1000).toFixed(1)}k</div>`;
+    }).join('');
+    heatContainer.innerHTML += `
+        <div class="heatmap-row">
+            <div class="heatmap-cat-label">${row.cat}</div>
+            ${cells}
+        </div>`;
+});
+</script>
 </body>
 </html>
