@@ -53,3 +53,4 @@ app.listen(PORT, () => {
     console.log(`FinTrack server running on port ${PORT}`);
     startAllCrons();
 });
+module.exports = app;
