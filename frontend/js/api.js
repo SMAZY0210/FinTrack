@@ -1,4 +1,4 @@
-// ── FinTrack API Configuration ─────────────────────────────────────
+// ── PoyshaGuni API Configuration ─────────────────────────────────────
 const API_BASE = 'https://fintrack-backend-jet.vercel.app/api';
 
 // ── Auth Helpers ───────────────────────────────────────────────────

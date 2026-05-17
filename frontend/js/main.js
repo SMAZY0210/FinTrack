@@ -1,7 +1,7 @@
 // Simple interaction example
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("FinTrack Landing Page Loaded");
+    console.log("PoyshaGuni Landing Page Loaded");
 
     const buttons = document.querySelectorAll(".btn-primary");
 

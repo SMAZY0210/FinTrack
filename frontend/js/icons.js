@@ -1,4 +1,4 @@
-// FinTrack Icon System — Lucide SVG icons, inlined for zero flash
+// PoyshaGuni Icon System — Lucide SVG icons, inlined for zero flash
 // Each function returns an SVG string at the requested size
 const Icon = {
     // Navigation
