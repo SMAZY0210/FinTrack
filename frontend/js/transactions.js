@@ -255,26 +255,29 @@ const handleSubmit = async (e) => {
 
     try {
         const amount = parseFloat(document.getElementById('amountField').value);
-        const date = document.getElementById('dateField').value;
-        const note = document.getElementById('noteField').value;
+        const date   = document.getElementById('dateField').value;
+        const note   = document.getElementById('noteField').value;
+
+        // ── Manual validation (browser required attr unreliable on toggled fields)
+        if (!amount || amount <= 0)  { showToast('Please enter a valid amount', 'error'); return; }
+        if (!date)                   { showToast('Please select a date', 'error'); return; }
 
         let body, endpoint, method;
 
         if (editingType === 'expense') {
-            body = {
-                title: document.getElementById('titleField').value,
-                category: document.getElementById('categoryField').value,
-                amount, date, note
-            };
+            const title    = document.getElementById('titleField').value.trim();
+            const category = document.getElementById('categoryField').value;
+            if (!title)    { showToast('Please enter a title', 'error'); return; }
+            if (!category) { showToast('Please select a category', 'error'); return; }
+            body     = { title, category, amount, date, note };
             endpoint = editingId ? `/expenses/${editingId}` : '/expenses';
-            method = editingId ? 'PUT' : 'POST';
+            method   = editingId ? 'PUT' : 'POST';
         } else {
-            body = {
-                source: document.getElementById('sourceField').value,
-                amount, date, note
-            };
+            const source = document.getElementById('sourceField').value.trim();
+            if (!source) { showToast('Please enter an income source', 'error'); return; }
+            body     = { source, amount, date, note };
             endpoint = editingId ? `/income/${editingId}` : '/income';
-            method = editingId ? 'PUT' : 'POST';
+            method   = editingId ? 'PUT' : 'POST';
         }
 
         await apiFetch(endpoint, { method, body: JSON.stringify(body) });
