@@ -71,9 +71,9 @@ const setupForms = () => {
         const sel = document.getElementById('currencySelect');
         const opt = sel.options[sel.selectedIndex];
         try {
-            const res = await apiFetch('/user/currency',{method:'PUT',body:JSON.stringify({currency:opt.value,currencySymbol:opt.dataset.symbol,locale:opt.dataset.locale})});
+            const res = await apiFetch('/user/currency',{method:'PUT',body:JSON.stringify({currency:opt.value,currencySymbol:opt.dataset.symbol})});
             const stored = getUser();
-            if(stored){Object.assign(stored,{currency:opt.value,currencySymbol:opt.dataset.symbol,locale:opt.dataset.locale});localStorage.setItem('poyshaguni_user',JSON.stringify(stored));}
+            if(stored){Object.assign(stored,{currency:opt.value,currencySymbol:opt.dataset.symbol});localStorage.setItem('poyshaguni_user',JSON.stringify(stored));}
             showToast(`Currency changed to ${opt.value} ${opt.dataset.symbol} ✓`);
         } catch(err) { showToast(err.message,'error'); }
         finally { btn.disabled=false; btn.textContent='Save Currency'; }
