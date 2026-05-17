@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,113 +11,171 @@
     <link rel="icon" type="image/svg+xml" sizes="32x32" href="favicon32.svg">
     <link rel="shortcut icon" href="favicon.svg">
     <link rel="stylesheet" href="style/main.css">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="PoyshaGuni personal finance app — built by S.M Abrar Zawad Yoboraj (SMAZY, SMAZY0210). Track income, expenses, budgets and goals.">
+    <meta name="keywords" content="PoyshaGuni, S.M Abrar Zawad Yoboraj, SMAZY, SMAZY0210, personal finance, expense tracker, budget app">
+    <meta name="author" content="S.M Abrar Zawad Yoboraj">
+    <!-- Open Graph -->
+    <meta property="og:title" content="About PoyshaGuni — S.M Abrar Zawad Yoboraj">
+    <meta property="og:description" content="PoyshaGuni is a personal finance management app built by S.M Abrar Zawad Yoboraj (SMAZY0210).">
+    <meta property="og:type" content="website">
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "S.M Abrar Zawad Yoboraj",
+      "alternateName": ["SMAZY", "SMAZY0210", "Abrar Zawad"],
+      "jobTitle": "Backend Engineer",
+      "worksFor": { "@type": "Organization", "name": "PoyshaGuni" },
+      "url": "https://fintrack.smazy0210.tech",
+      "sameAs": ["https://github.com/SMAZY0210"]
+    }
+    </script>
     <script src="js/theme.js"></script>
+    <style>
+        .about-hero { padding: 80px 64px 60px; text-align: center; position: relative; overflow: hidden; }
+        .about-hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, var(--border) 1px, transparent 1px); background-size: 48px 48px; opacity: 0.3; }
+        .about-hero::after { content: ''; position: absolute; top: -150px; left: 50%; transform: translateX(-50%); width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,212,160,0.1) 0%, transparent 70%); pointer-events: none; }
+        .about-hero h1 { position: relative; z-index: 1; font-family: var(--font-head); font-size: clamp(32px, 5vw, 56px); font-weight: 800; color: var(--text); margin-bottom: 16px; line-height: 1.1; }
+        .about-hero h1 em { font-style: normal; color: var(--emerald); }
+        .about-hero p { position: relative; z-index: 1; color: var(--text-2); font-size: 17px; max-width: 520px; margin: 0 auto; line-height: 1.7; }
+        .about-blocks { max-width: 900px; margin: 0 auto; padding: 60px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .about-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 32px; position: relative; overflow: hidden; }
+        .about-block-icon { width: 42px; height: 42px; border-radius: var(--r-md); background: var(--emerald-bg); border: 1px solid rgba(0,212,160,0.2); display: flex; align-items: center; justify-content: center; color: var(--emerald); margin-bottom: 16px; }
+        .about-block h2 { font-family: var(--font-head); font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+        .about-block p { color: var(--text-2); font-size: 14px; line-height: 1.75; }
+        .values-section { padding: 60px 64px; background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .values-header { text-align: center; margin-bottom: 40px; }
+        .values-header h2 { font-family: var(--font-head); font-size: clamp(24px, 3vw, 36px); font-weight: 800; color: var(--text); margin-bottom: 10px; }
+        .values-header p { color: var(--text-2); font-size: 15px; }
+        .values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 1000px; margin: 0 auto; }
+        .value-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 24px 20px; text-align: center; transition: var(--t-base); }
+        .value-card:hover { border-color: var(--emerald); transform: translateY(-3px); box-shadow: 0 0 20px rgba(0,212,160,0.15); }
+        .value-icon { font-size: 28px; margin-bottom: 12px; display: block; }
+        .value-card h3 { font-family: var(--font-head); font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+        .value-card p { color: var(--text-2); font-size: 13px; line-height: 1.6; }
+        .team-section { padding: 60px 64px; text-align: center; }
+        .team-section h2 { font-family: var(--font-head); font-size: clamp(24px, 3vw, 36px); font-weight: 800; color: var(--text); margin-bottom: 8px; }
+        .team-intro { color: var(--text-2); font-size: 15px; margin-bottom: 40px; }
+        .team-grid { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+        .member { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .member-image-wrapper { width: 110px; height: 110px; border-radius: 50%; overflow: hidden; border: 3px solid var(--emerald); box-shadow: 0 0 24px rgba(0,212,160,0.2); }
+        .member-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .member h4 { font-family: var(--font-head); font-size: 15px; font-weight: 700; color: var(--text); }
+        .member-role { font-size: 12px; color: var(--emerald); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .about-cta { padding: 60px 64px; text-align: center; }
+        .about-cta h2 { font-family: var(--font-head); font-size: clamp(24px, 3vw, 36px); font-weight: 800; color: var(--text); margin-bottom: 12px; }
+        .about-cta p { color: var(--text-2); font-size: 15px; margin-bottom: 28px; }
+        .about-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        @media (max-width: 768px) {
+            .about-hero { padding: 60px 20px 48px; }
+            .about-blocks { grid-template-columns: 1fr; padding: 40px 20px; gap: 16px; }
+            .about-block { padding: 24px 20px; }
+            .values-section { padding: 48px 20px; }
+            .values-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .value-card { padding: 20px 16px; }
+            .team-section { padding: 48px 20px; }
+            .team-grid { gap: 28px; }
+            .member-image-wrapper { width: 88px; height: 88px; }
+            .about-cta { padding: 48px 20px; }
+            .about-cta-btns { flex-direction: column; align-items: center; }
+        }
+        @media (max-width: 480px) { .values-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
-
-<!-- NAVBAR -->
 <header class="navbar">
-    <div class="logo">PoyshaGuni</div>
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="features.html">Features</a></li>
-            <li><a href="pricing.html">Pricing</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="login.html" class="btn-login">Login</a></li>
-            <li><a href="signup.html" class="btn-primary">Sign Up</a></li>
-        </ul>
-    </nav>
+    <a href="index.html" class="logo">PoyshaGuni</a>
+    <nav><ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="login.html" class="btn-login">Login</a></li>
+        <li><a href="signup.html" class="btn-primary">Sign Up</a></li>
+    </ul></nav>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </header>
+<div class="nav-mobile-menu" id="navMobileMenu">
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="about.html">About</a>
+    <div class="mobile-menu-divider"></div>
+    <a href="login.html">Login</a>
+    <a href="signup.html" class="btn-primary">Get Started Free</a>
+</div>
 
-<!-- HERO -->
-<section class="hero">
-    <div class="hero-text">
-        <h1>About PoyshaGuni</h1>
-        <p>Empowering individuals to take full control of their finances through smart tracking and analytics.</p>
-    </div>
+<section class="about-hero">
+    <h1>Built for <em>real</em> financial clarity</h1>
+    <p>PoyshaGuni empowers individuals to take full control of their finances through smart tracking, budgeting, and analytics.</p>
 </section>
 
-<!-- MISSION -->
-<section class="about-section">
-    <div class="section-container">
-        <div class="section-content">
-            <h2>Our Mission</h2>
-            <p>
-                PoyshaGuni is built to simplify personal finance management. We aim to help users track their income,
-                manage expenses, and gain meaningful insights through data-driven analytics. Our goal is to make financial
-                literacy accessible to everyone, regardless of their background or technical expertise.
-            </p>
-        </div>
+<div class="about-blocks">
+    <div class="about-block">
+        <div class="about-block-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <h2>Our Mission</h2>
+        <p>PoyshaGuni is built to simplify personal finance management. We help users track their income, manage expenses, and gain meaningful insights through data-driven analytics — making financial literacy accessible to everyone, regardless of background or technical expertise.</p>
     </div>
-</section>
-
-<!-- VISION -->
-<section class="about-section light">
-    <div class="section-container">
-        <div class="section-content">
-            <h2>Our Vision</h2>
-            <p>
-                We envision a world where everyone can make smarter financial decisions using intuitive tools
-                powered by modern technology and analytics. PoyshaGuni aims to be the go-to platform for individuals
-                seeking financial independence and long-term wealth building.
-            </p>
-        </div>
+    <div class="about-block">
+        <div class="about-block-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        <h2>Our Vision</h2>
+        <p>We envision a world where everyone can make smarter financial decisions using intuitive tools powered by modern technology. PoyshaGuni aims to be the go-to platform for individuals seeking financial independence and long-term wealth building.</p>
     </div>
-</section>
+</div>
 
-<!-- VALUES -->
-<section class="about-section values-section">
-    <div class="section-container">
+<section class="values-section">
+    <div class="values-header">
         <h2>Our Core Values</h2>
-        <div class="values-grid">
-            <div class="value-card">
-                <h3>Simplicity</h3>
-                <p>We believe complex financial tools shouldn't be complicated. Our platform is designed to be intuitive and user-friendly.</p>
-            </div>
-            <div class="value-card">
-                <h3>Transparency</h3>
-                <p>Your data is yours. We maintain complete transparency in how we handle user information and analytics.</p>
-            </div>
-            <div class="value-card">
-                <h3>Empowerment</h3>
-                <p>We empower users to take control of their finances with actionable insights and smart recommendations.</p>
-            </div>
-            <div class="value-card">
-                <h3>Innovation</h3>
-                <p>We continuously improve and innovate to bring cutting-edge financial tools to our users.</p>
-            </div>
+        <p>The principles that guide everything we build</p>
+    </div>
+    <div class="values-grid">
+        <div class="value-card"><span class="value-icon">✦</span><h3>Simplicity</h3><p>Complex financial tools shouldn't be complicated. Our platform is designed to be intuitive and user-friendly for everyone.</p></div>
+        <div class="value-card"><span class="value-icon">◈</span><h3>Transparency</h3><p>Your data is yours. We maintain complete transparency in how we handle user information and generate analytics.</p></div>
+        <div class="value-card"><span class="value-icon">⬡</span><h3>Empowerment</h3><p>We empower users to take control of their finances with actionable insights and smart recommendations.</p></div>
+        <div class="value-card"><span class="value-icon">◎</span><h3>Innovation</h3><p>We continuously improve to bring cutting-edge financial tools that evolve with our users' needs.</p></div>
+    </div>
+</section>
+
+<section class="team-section">
+    <h2>Meet the Team</h2>
+    <p class="team-intro">Passionate professionals dedicated to transforming financial management</p>
+    <div class="team-grid">
+        <div class="member">
+            <div class="member-image-wrapper"><img src="images/Abrar.jpg" alt="S.M Abrar Zawad Yoboraj - SMAZY - SMAZY0210 - Backend Engineer at PoyshaGuni"></div>
+            <h4>S.M Abrar Zawad Yoboraj</h4>
+            <p class="member-role">Backend Engineer</p>
+        </div>
+        <div class="member">
+            <div class="member-image-wrapper"><img src="images/Tumpa.jpg" alt="Refath Ara Islam"></div>
+            <h4>Refath Ara Islam</h4>
+            <p class="member-role">Frontend Engineer</p>
         </div>
     </div>
 </section>
 
-<!-- TEAM -->
-<section class="team">
-    <div class="section-container">
-        <h2>Meet the Team</h2>
-        <p class="team-intro">Passionate professionals dedicated to transforming financial management</p>
-        <div class="team-grid">
-            <div class="member">
-                <div class="member-image-wrapper">
-                    <img src="images/Abrar.jpg" alt="S.M Abrar Zawad Yoboraj">
-                </div>
-                <h4>S.M Abrar Zawad Yoboraj</h4>
-                <p class="member-role">Backend Engineer</p>
-            </div>
-            <div class="member">
-                <div class="member-image-wrapper">
-                    <img src="images/Tumpa.jpg" alt="Refath Ara Islam">
-                </div>
-                <h4>Refath Ara Islam</h4>
-                <p class="member-role">Frontend Engineer</p>
-            </div>
-        </div>
+<section class="about-cta">
+    <h2>Ready to take control?</h2>
+    <p>Join PoyshaGuni today — free forever, no credit card needed.</p>
+    <div class="about-cta-btns">
+        <a href="signup.html" class="btn-primary">Create free account</a>
+        <a href="login.html" class="btn-secondary">Sign in</a>
     </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
+    <span class="footer-logo">PoyshaGuni</span>
     <p>© 2026 PoyshaGuni. All rights reserved.</p>
 </footer>
+
+<script>
+(function(){
+    var btn=document.getElementById('navHamburger'),menu=document.getElementById('navMobileMenu');
+    if(!btn||!menu)return;
+    btn.addEventListener('click',function(){btn.classList.toggle('open');menu.classList.toggle('open');});
+    document.addEventListener('click',function(e){if(!btn.contains(e.target)&&!menu.contains(e.target)){btn.classList.remove('open');menu.classList.remove('open');}});
+})();
+</script>
 </body>
 </html>
