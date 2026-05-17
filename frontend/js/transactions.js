@@ -226,10 +226,25 @@ const closeModal = () => {
 };
 
 const toggleFormFields = (type) => {
-    const expFields = document.getElementById('expenseFields');
-    const incFields = document.getElementById('incomeFields');
-    if (expFields) expFields.style.display = type === 'expense' ? 'block' : 'none';
-    if (incFields) incFields.style.display = type === 'income' ? 'block' : 'none';
+    const expFields     = document.getElementById('expenseFields');
+    const incFields     = document.getElementById('incomeFields');
+    const titleField    = document.getElementById('titleField');
+    const categoryField = document.getElementById('categoryField');
+    const sourceField   = document.getElementById('sourceField');
+
+    if (type === 'expense') {
+        if (expFields) expFields.style.display = 'block';
+        if (incFields) incFields.style.display = 'none';
+        if (titleField)    titleField.required    = true;
+        if (categoryField) categoryField.required = true;
+        if (sourceField)   sourceField.required   = false;
+    } else {
+        if (expFields) expFields.style.display = 'none';
+        if (incFields) incFields.style.display = 'block';
+        if (sourceField)   sourceField.required   = true;
+        if (titleField)    titleField.required     = false;
+        if (categoryField) categoryField.required  = false;
+    }
 };
 
 // ── Submit ────────────────────────────────────────────────────────
