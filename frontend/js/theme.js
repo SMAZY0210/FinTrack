@@ -1,13 +1,13 @@
 (function () {
-    const saved = localStorage.getItem('fintrack_theme') || 'dark';
+    const saved = localStorage.getItem('poyshaguni_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', saved);
 })();
 
-const getTheme = () => localStorage.getItem('fintrack_theme') || 'dark';
+const getTheme = () => localStorage.getItem('poyshaguni_theme') || 'dark';
 
 const setTheme = (theme) => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('fintrack_theme', theme);
+    localStorage.setItem('poyshaguni_theme', theme);
     updateFAB(theme);
 };
 

@@ -38,13 +38,13 @@ app.use('/api/analytics', require('./routes/analytics'));
 app.use('/api/budgets',   require('./routes/budgets'));
 app.use('/api/goals',     require('./routes/goals'));
 
-app.get('/api/health', (req, res) => res.json({ success: true, message: 'FinTrack API running 🚀', timestamp: new Date() }));
+app.get('/api/health', (req, res) => res.json({ success: true, message: 'PoyshaGuni API running 🚀', timestamp: new Date() }));
 app.use((req, res) => res.status(404).json({ success: false, message: 'Route not found.' }));
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`FinTrack server running on port ${PORT}`);
+    console.log(`PoyshaGuni server running on port ${PORT}`);
     // Only start crons in local development, not on Vercel
     if (process.env.NODE_ENV !== 'production') {
         startAllCrons();

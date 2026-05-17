@@ -28,20 +28,20 @@ const sendEmail = async ({ to, subject, html }) => {
 
 const emailTemplates = {
     welcome: (name) => ({
-        subject: 'Welcome to FinTrack! 🎉',
+        subject: 'Welcome to PoyshaGuni! 🎉',
         html: `<div style="font-family:Arial,sans-serif;max-width:500px;margin:auto;padding:32px;background:#f8fafc;border-radius:16px">
             <h1 style="color:#4f46e5;margin-bottom:8px">Welcome, ${name}!</h1>
-            <p style="color:#6b7280">Your FinTrack account is ready. Start tracking your finances and take control of your money.</p>
+            <p style="color:#6b7280">Your PoyshaGuni account is ready. Start tracking your finances and take control of your money.</p>
             <a href="${process.env.FRONTEND_URL || 'http://localhost:5500'}/dashboard.html" 
                style="display:inline-block;background:linear-gradient(135deg,#6366f1,#06b6d4);color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:16px">
                Open Dashboard →
             </a>
-            <p style="color:#9ca3af;font-size:12px;margin-top:24px">© 2026 FinTrack</p>
+            <p style="color:#9ca3af;font-size:12px;margin-top:24px">© 2026 PoyshaGuni</p>
         </div>`
     }),
 
     recurringDue: (name, items) => ({
-        subject: `FinTrack: ${items.length} recurring transaction(s) due`,
+        subject: `PoyshaGuni: ${items.length} recurring transaction(s) due`,
         html: `<div style="font-family:Arial,sans-serif;max-width:500px;margin:auto;padding:32px;background:#f8fafc;border-radius:16px">
             <h2 style="color:#4f46e5">Recurring Transactions Due</h2>
             <p style="color:#6b7280">Hi ${name}, the following are due today:</p>
@@ -62,7 +62,7 @@ const emailTemplates = {
     }),
 
     budgetAlert: (name, category, percent, limit, currency) => ({
-        subject: `FinTrack: ${category} budget at ${percent}%`,
+        subject: `PoyshaGuni: ${category} budget at ${percent}%`,
         html: `<div style="font-family:Arial,sans-serif;max-width:500px;margin:auto;padding:32px;background:#f8fafc;border-radius:16px">
             <h2 style="color:${percent >= 100 ? '#ef4444' : '#f59e0b'}">${percent >= 100 ? '🚨 Budget Exceeded!' : '⚠️ Budget Warning'}</h2>
             <p style="color:#6b7280">Hi ${name}, your <strong>${category}</strong> spending is at <strong>${percent}%</strong> of your ${currency}${limit.toFixed(2)} limit.</p>
@@ -74,7 +74,8 @@ const emailTemplates = {
     }),
 
     weeklyReport: (name, data, currency) => ({
-        subject: `FinTrack Weekly Report — ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`,
+        subject: `PoyshaGuni Weekly Report — ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`,
+
         html: `<div style="font-family:Arial,sans-serif;max-width:500px;margin:auto;padding:32px;background:#f8fafc;border-radius:16px">
             <h2 style="color:#4f46e5">Your Weekly Summary</h2>
             <p style="color:#6b7280">Hi ${name}, here's how you did this week:</p>

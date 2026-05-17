@@ -1,20 +1,20 @@
 // ── PoyshaGuni API Configuration ─────────────────────────────────────
-const API_BASE = 'https://fintrack-backend-jet.vercel.app/api';
+const API_BASE = 'https://poyshaguni-backend-jet.vercel.app/api';
 
 // ── Auth Helpers ───────────────────────────────────────────────────
-const getToken = () => localStorage.getItem('fintrack_token');
+const getToken = () => localStorage.getItem('poyshaguni_token');
 
 const getUser = () =>
-    JSON.parse(localStorage.getItem('fintrack_user') || 'null');
+    JSON.parse(localStorage.getItem('poyshaguni_user') || 'null');
 
 const setAuth = (token, user) => {
-    localStorage.setItem('fintrack_token', token);
-    localStorage.setItem('fintrack_user', JSON.stringify(user));
+    localStorage.setItem('poyshaguni_token', token);
+    localStorage.setItem('poyshaguni_user', JSON.stringify(user));
 };
 
 const clearAuth = () => {
-    localStorage.removeItem('fintrack_token');
-    localStorage.removeItem('fintrack_user');
+    localStorage.removeItem('poyshaguni_token');
+    localStorage.removeItem('poyshaguni_user');
 };
 
 const isLoggedIn = () => !!getToken();

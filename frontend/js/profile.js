@@ -53,7 +53,7 @@ const populateProfile = (u) => {
     const stored = getUser();
     if (stored) {
         Object.assign(stored, { name: u.name, email: u.email, avatar: u.avatar });
-        localStorage.setItem('fintrack_user', JSON.stringify(stored));
+        localStorage.setItem('poyshaguni_user', JSON.stringify(stored));
     }
 };
 
@@ -106,7 +106,7 @@ const setupAvatarUI = () => {
             renderProfileAvatar(user);
             updateNavAvatars(user);
             const stored = getUser();
-            if (stored) { stored.avatar = null; localStorage.setItem('fintrack_user', JSON.stringify(stored)); }
+            if (stored) { stored.avatar = null; localStorage.setItem('poyshaguni_user', JSON.stringify(stored)); }
             showToast('Profile picture removed.');
         } catch (err) {
             showToast(err.message, 'error');
@@ -315,7 +315,7 @@ const saveAvatar = async () => {
         updateNavAvatars(user);
 
         const stored = getUser();
-        if (stored) { stored.avatar = res.avatar; localStorage.setItem('fintrack_user', JSON.stringify(stored)); }
+        if (stored) { stored.avatar = res.avatar; localStorage.setItem('poyshaguni_user', JSON.stringify(stored)); }
 
         closeCropModal();
         showToast('Profile picture updated! ✓');

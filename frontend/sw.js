@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fintrack-v2';
+const CACHE_NAME = 'poyshaguni-v2';
 const STATIC_ASSETS = [
     '/', '/dashboard.html', '/transactions.html', '/budgets.html',
     '/goals.html', '/recurring.html', '/profile.html', '/settings.html',

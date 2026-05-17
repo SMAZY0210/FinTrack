@@ -33,7 +33,7 @@ const nextStep = async () => {
                 body: JSON.stringify({ currency: opt.value, currencySymbol: opt.dataset.symbol, locale: opt.dataset.locale })
             });
             const stored = getUser();
-            if (stored) { stored.currency = opt.value; stored.currencySymbol = opt.dataset.symbol; stored.locale = opt.dataset.locale; localStorage.setItem('fintrack_user', JSON.stringify(stored)); }
+            if (stored) { stored.currency = opt.value; stored.currencySymbol = opt.dataset.symbol; stored.locale = opt.dataset.locale; localStorage.setItem('poyshaguni_user', JSON.stringify(stored)); }
         } catch (e) { showToast(e.message, 'error'); return; }
     }
     if (step === 2) {
@@ -56,6 +56,6 @@ const prevStep = () => { if (step > 1) { step--; renderStep(); } };
 const finishOnboarding = async () => {
     try { await apiFetch('/user/onboarding-complete', { method: 'POST' }); } catch (e) {}
     const stored = getUser();
-    if (stored) { stored.onboardingComplete = true; localStorage.setItem('fintrack_user', JSON.stringify(stored)); }
+    if (stored) { stored.onboardingComplete = true; localStorage.setItem('poyshaguni_user', JSON.stringify(stored)); }
     window.location.href = 'dashboard.html';
 };

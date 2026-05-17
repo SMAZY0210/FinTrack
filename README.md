@@ -1,4 +1,4 @@
-# FinTrack — Personal Finance Management App
+# PoyshaGuni — Personal Finance Management App
 
 A comprehensive full-stack finance tracker with **budgeting**, **goal tracking**, **recurring transactions**, **analytics**, and **audit logging**. Built with **Node.js + Express + MongoDB** (backend) and **Vanilla HTML/CSS/JS + PWA** (frontend).
 
@@ -6,10 +6,8 @@ A comprehensive full-stack finance tracker with **budgeting**, **goal tracking**
 
 ---
 
-## Project Structure
-
 ```
-fintrack/
+poyshaguni/
 ├── backend/
 │   ├── server.js                  # Entry point
 │   ├── .env                       # Environment variables
@@ -120,7 +118,7 @@ Edit `backend/.env`:
 
 ```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/fintrack
+MONGO_URI=mongodb://localhost:27017/poyshaguni
 JWT_SECRET=your_strong_secret_here_change_this
 JWT_EXPIRE=7d
 NODE_ENV=development
@@ -128,7 +126,7 @@ NODE_ENV=development
 
 **Using MongoDB Atlas (cloud)?** Replace `MONGO_URI` with your connection string:
 ```
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/fintrack?retryWrites=true&w=majority
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/poyshaguni?retryWrites=true&w=majority
 ```
 
 ### 3. Start Backend
@@ -169,7 +167,7 @@ PORT=5000
 NODE_ENV=development
 
 # Database
-MONGO_URI=mongodb://localhost:27017/fintrack
+MONGO_URI=mongodb://localhost:27017/poyshaguni
 
 # Security
 JWT_SECRET=your_very_strong_secret_key_change_in_production_12345
@@ -180,7 +178,7 @@ SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your-email@gmail.com
 SMTP_PASS=your-app-password
-SEND_FROM_EMAIL=noreply@fintrack.app
+SEND_FROM_EMAIL=noreply@poyshaguni.app
 
 # CORS
 ALLOWED_ORIGINS=file://,http://localhost:3000,http://127.0.0.1:5500,http://localhost:5500,http://localhost:5173
@@ -188,7 +186,7 @@ ALLOWED_ORIGINS=file://,http://localhost:3000,http://127.0.0.1:5500,http://local
 
 **Using MongoDB Atlas (recommended)?** Replace `MONGO_URI`:
 ```
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/fintrack?retryWrites=true&w=majority
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/poyshaguni?retryWrites=true&w=majority
 ```
 
 ### 3. Start Backend
@@ -646,10 +644,10 @@ Content-Type: application/json
 
 ## Testing with Postman
 
-Import the Postman collection: `FinTrack_API.postman_collection.json`
+Import the Postman collection: `PoyshaGuni_API.postman_collection.json`
 
 1. Download and install [Postman](https://www.postman.com/downloads/)
-2. File → Import → Select `FinTrack_API.postman_collection.json`
+2. File → Import → Select `PoyshaGuni_API.postman_collection.json`
 3. Create a Postman environment with:
    - `base_url` = `http://localhost:5000/api`
    - `token` = (auto-populated after login)
@@ -708,7 +706,7 @@ CMD ["npm", "start"]
 
 MIT — Feel free to use and modify this project.
 
-1. Import `FinTrack_API.postman_collection.json` into Postman
+1. Import `PoyshaGuni_API.postman_collection.json` into Postman
 2. Run **Login** — the token auto-saves to collection variable
 3. All protected routes use `{{token}}` automatically
 
